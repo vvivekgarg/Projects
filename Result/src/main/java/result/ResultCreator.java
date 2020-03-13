@@ -1,10 +1,5 @@
 package result;
 
-import java.io.FileOutputStream;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -20,6 +15,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
+import java.io.FileOutputStream;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class ResultCreator {
 
@@ -110,10 +110,8 @@ public class ResultCreator {
 		label = new Label(shell, SWT.NULL);
 		label.setText("Logs:");
 
-		Text logs = new Text(shell, SWT.WRAP | SWT.MULTI | SWT.BORDER
-				| SWT.H_SCROLL | SWT.V_SCROLL);
-		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL
-				| GridData.VERTICAL_ALIGN_FILL);
+		Text logs = new Text(shell, SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.VERTICAL_ALIGN_FILL);
 		gridData.horizontalSpan = 3;
 		gridData.grabExcessVerticalSpace = true;
 		gridData.grabExcessHorizontalSpace = true;
@@ -125,27 +123,20 @@ public class ResultCreator {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 
-				MessageBox messageBox = new MessageBox(shell, SWT.ICON_WARNING
-						| SWT.OK);
+				MessageBox messageBox = new MessageBox(shell, SWT.ICON_WARNING | SWT.OK);
 				messageBox.setText("Warning");
-				if (classText.getText() == null
-						|| classText.getText().isEmpty()) {
+				if (classText.getText() == null || classText.getText().isEmpty()) {
 					messageBox.setMessage("Please provide class information.");
 					messageBox.open();
-				} else if (session.getText() == null
-						|| session.getText().isEmpty()) {
-					messageBox
-							.setMessage("Please provide Session information.");
+				} else if (session.getText() == null || session.getText().isEmpty()) {
+					messageBox.setMessage("Please provide Session information.");
 					messageBox.open();
-				} else if (schoolHeader.getText() == null
-						|| schoolHeader.getText().isEmpty()) {
-					messageBox
-							.setMessage("Please provide School Header information.");
+				} else if (schoolHeader.getText() == null || schoolHeader.getText().isEmpty()) {
+					messageBox.setMessage("Please provide School Header information.");
 					messageBox.open();
 				}
 
-				else if (inputFile.getText() == null
-						|| inputFile.getText().isEmpty()) {
+				else if (inputFile.getText() == null || inputFile.getText().isEmpty()) {
 					messageBox.setMessage("Please provide input file.");
 					messageBox.open();
 				}
@@ -167,49 +158,39 @@ public class ResultCreator {
 						dialog.setFilterPath("c:\\"); // Windows path
 						String saveFile = dialog.open();
 						if (saveFile == null || saveFile.trim().isEmpty()) {
-							messageBox
-									.setMessage("Please specify corerct file for saving result.");
+							messageBox.setMessage("Please specify corerct file for saving result.");
 							messageBox.open();
 						} else {
 							logs.append("Reading Input file. \n");
-							List<Student> students = reader.readFile(inputFile
-									.getText());
-							logs.append("Successfully read information of "
-									+ students.size() + " students.\n");
+							List<Student> students = reader.readFile(inputFile.getText());
+							logs.append("Successfully read information of " + students.size() + " students.\n");
 
-							FileOutputStream out = new FileOutputStream(
-									saveFile);
+							FileOutputStream out = new FileOutputStream(saveFile);
 							Workbook workbook = new HSSFWorkbook();
 							// Ininitialize Styles
 							new ExcelUtils(workbook);
 
 							// Student wise result
-							Sheet sheet = workbook
-									.createSheet("Student's Result");
+							Sheet sheet = workbook.createSheet("Student's Result");
 							logs.append("Started writing student wise details.\n");
-							StudentResultSheet header = new StudentResultSheet(
-									workbook);
-							header.createStudentResultSheets(sheet, students,
-									inputValues);
+							StudentResultSheet header = new StudentResultSheet(workbook);
+							header.createStudentResultSheets(sheet, students, inputValues);
 							logs.append("Successfully written student wise result.\n");
 							// FInal Result
 							sheet = workbook.createSheet("Final Result");
 							logs.append("Started writing final results.\n");
 							FinalResultSheet finalResult = new FinalResultSheet(
 									reader.getSheetNames(inputFile.getText()));
-							finalResult.createFinalResultSheets(sheet,
-									students, inputValues);
+							finalResult.createFinalResultSheets(sheet, students, inputValues);
 							logs.append("Successfully written final result.\n");
 
 							workbook.write(out);
 							out.close();
-							messageBox
-									.setMessage("File Generated Successfully.");
+							messageBox.setMessage("File Generated Successfully.");
 							messageBox.open();
 						}
 					} catch (Exception e) {
-						messageBox
-								.setMessage("File is already opened or Incorrect file has been provided.");
+						messageBox.setMessage("File is already opened or Incorrect file has been provided.");
 						messageBox.open();
 						e.printStackTrace();
 					}
