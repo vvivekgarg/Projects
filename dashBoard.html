@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+   xmlns:th="http://www.thymeleaf.org">
+	<head>
+        <title>SPC Dashboard</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+     <style>
+#provenance {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#provenance td, #provenance th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  word-wrap:break-word;
+}
+
+#provenance td {
+  font-size: 13px;
+}
+
+#provenance tr:nth-child(even){background-color: #f2f2f2;}
+
+#provenance tr:hover {background-color: #ddd;}
+
+#provenance th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #337ab7;
+  color: white;
+}
+
+.buttonStyle {
+    color: #fff;
+    background-color: #204d74;
+    border-color: #204d74;
+    border-radius: 4px;
+    padding: 3px 7px;
+}
+
+.textStyle {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+}
+
+.headerStyle {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    color: #333;
+}
+
+</style>
+    </head>
+    <body>
+        <h3 class="headerStyle">Refdata Execution</h3>
+        
+<form action="/">
+<label for="Table Names" class="textStyle">Table Name:</label>
+<select name="tableName">
+ <option th:value="ALL" th:text="All" class="textStyle"></option>
+ <option th:each = "table : ${tables}" th:value="${table}" th:text="${table}" th:selected="${table==tableName}" class="textStyle"></option>
+</select>
+ <input type="submit" value="Submit" class="buttonStyle">
+</form>
+ <br/>
+ <form action="/betweenDates">
+  <label for="fromDate" class="textStyle">From Date :</label>
+  <input type="date" id="fromDate" name="fromDate" th:value="${fromDate}" >
+  
+  <label for="toDate" class="textStyle">To Date :</label>
+  <input type="date" id="toDate" name="toDate" th:value="${toDate}">
+  <input type="submit" class="buttonStyle" >
+</form>
+ 
+<br/>
+<h2 class="headerStyle">Total Entries : [[${tableEntriesCount}]]</h2>
+
+        <table id="provenance" border="1">
+            <tr>
+            <th>Table Name</th>
+                <th>Extraction StartTime</th>
+                <th>Extraction EndTime</th>
+                <th>Extraction Duration</th>
+                <th>Extraction Status</th>
+                <th>RecordCount</th>
+                <th>Ingestion StartTime</th>
+                <th>Ingestion EndTime</th>
+                <th>Ingestion Duration</th>
+                <th>Notification Status</th>
+                <th>BatchId</th>
+                <th>FileId</th>
+                <th>MaxExtractionDate</th>
+                <th>Errors</th>
+                <th>Error TimeStamp</th>
+            </tr>
+
+                <tr th:each = "spcProvenance : ${spcProvenances}">
+                    <td th:text="${spcProvenance.tableName}">tableName</td>
+                    <td th:text="${spcProvenance.extractionStartTime}?:'-'">extractionStartTime</td>
+                    <td th:text="${spcProvenance.extractionEndTime}?:'-'">extractionEndTime</td>
+                    <td th:text="${spcProvenance.extractionDuration}?:'-'">extractionDuration</td>
+                    <td th:text="${spcProvenance.extractionStatus}?:'-'">extractionStatus</td>
+                    <td th:text="${spcProvenance.recordCount}?:'-'">recordCount</td>
+                    <td th:text="${spcProvenance.ingestionStartTime}?:'-'">ingestionStartTime</td>
+                    <td th:text="${spcProvenance.ingestionEndTime}?:'-'">ingestionEndTime</td>
+                    <td th:text="${spcProvenance.ingestionDuration}?:'-'">ingestionDuration</td>
+                    <td th:text="${spcProvenance.notificationStatus}?:'-'">notificationStatus</td>
+                    <td th:text="${spcProvenance.batchId}?:'-'">batchId</td>
+                    <td th:text="${spcProvenance.fileId}?:'-'">fileId</td>
+                    <td th:text="${spcProvenance.maxExtractionDate}?:'-'">maxExtractionDate</td>
+                    <td th:text="${spcProvenance.errors}?:'-'">errors</td>
+                    <td th:text="${spcProvenance.errorTimeStamp}?:'-'">errorTimeStamp</td>
+                </tr>
+        </table>
+    </body>
+</html>
