@@ -1,0 +1,48 @@
+Connect to Ec2: 
+ssh -i {keyFileName} {user}@ec2-13-233-152-182.ap-south-1.compute.amazonaws.com
+
+ssh -i acadedge-app-vm-key-pair.pem ubuntu@ec2-13-233-152-182.ap-south-1.compute.amazonaws.com
+
+
+FOr Copying the jars to node go to the local directory: 
+ scp -i {keyFileName} -r {jarname} {user}@asp-staging-worker01:~/
+
+ 
+ scp -i acadedge-app-vm-key-pair.pem -r spring-boot-0.0.1-SNAPSHOT.jar ubuntu@ec2-13-233-152-182.ap-south-1.compute.amazonaws.com:~/
+
+
+Copy remote to local
+ scp -r asp-314-worker01:~/../../home/deploy/CV/drools-staging/app* /cygdrive/c/VivekData/SCP
+ 
+ chmod 777 -R .
+ 
+ chown -R root:root .
+
+ ls-la to list down permissions
+ 
+ 
+ 
+ 
+ Copy the jar to required deployment folder using:
+ cp {filename) {location}
+ 
+ 
+To List the prcoesses of java 
+ps -fea|grep -i java
+
+
+
+
+
+ 
+
+ 
+ 
+  Search files with exception
+ 
+ grep -iRl "your-text-to-find" ./
+Here are the switches:
+-i - ignore text case
+-R - recursively search files in subdirectories.
+-l - show file names instead of file contents portions.
+ 
